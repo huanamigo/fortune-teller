@@ -1,23 +1,52 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
 
 function App() {
+  const [fortune, changeFortune] = useState({
+    currentFortune: '',
+    fortuneArr: ['first', 'second', 'third'],
+    additionalFortune: '',
+  });
+
+  const showFortune = () => {
+    let arr = fortune.fortuneArr;
+    let math = Math.floor(Math.random() * arr.length);
+
+    changeFortune({
+      ...fortune,
+      currentFortune: `${fortune.fortuneArr[math]}`,
+    });
+  };
+
+  const addFortune = () => {
+    changeFortune({
+      ...fortune,
+      fortuneArr: [...fortune.fortuneArr, fortune.additionalFortune],
+      additionalFortune: '',
+    });
+  };
+
+  const addFortuneText = (e) => {
+    changeFortune({
+      ...fortune,
+      additionalFortune: e.target.value,
+    });
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <button onClick={showFortune}>Make a wish and click </button>
+      <br />
+      <label>
+        <input
+          type="text"
+          name="text"
+          onChange={addFortuneText}
+          value={fortune.additionalFortune}
+        />
+        <button onClick={addFortune}>Add your guess</button>
+      </label>
+
+      <p>{fortune.currentFortune}</p>
     </div>
   );
 }
